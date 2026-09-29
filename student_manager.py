@@ -19,7 +19,7 @@ students = [
         "score": 49
     }
 ]
-
+#                   HELPER FUCTIONS 
 # HELPER FUNCTIONS FOR SCORE VALIDATION THAT WORKS FOR ANY INPUT FUNCTION THAT GETS SCORE 
 def get_valid_score(prompt):
     while True:
@@ -32,7 +32,6 @@ def get_valid_score(prompt):
         except ValueError :
             print("Please enter a valid score.")
 
-
 # HELPER FUNCTIONS FOR NAME VALIDATION THAT WORKS FOR ANY INPUT FUNCTION THAT GETS NAME 
 def get_valid_name(prompt):
     while True :
@@ -42,6 +41,7 @@ def get_valid_name(prompt):
             continue
         return name 
 
+# HELPER FUNCTIONS FOR AGE VALIDATION THAT WORKS FOR ANY INPUT FUNCTION THAT GETS AGE
 def get_valid_age(prompt):
     while True :
         try :
@@ -53,6 +53,7 @@ def get_valid_age(prompt):
         except ValueError :
             print("Please enter a valid age.")
 
+# HELPER FUNCTIONS FOR COURSE VALIDATION THAT WORKS FOR ANY INPUT FUNCTION THAT GETS COURSE 
 def get_valid_course(prompt):
     while True :
         student_course = input(prompt).strip().capitalize()
@@ -61,6 +62,17 @@ def get_valid_course(prompt):
             continue 
         return student_course 
 
+def print_students(student_list):
+    for i in range(len(student_list)):
+        print(f"{i+1}. {student_list[i]['name']} | Score: {student_list[i]['score']}")
+        
+def find_students_by_name(name):
+    for student in students:
+        if student["name"] == name :
+            return student
+    return None
+
+#               MAIN FUNCTIONS 
 #  ADD STUDENT FUNCTION 
 def add_student():
     student_name = get_valid_name("Enter student's name: ")
@@ -78,32 +90,24 @@ def add_student():
 # VIEW STUDENTS FUNCTION 
 def view_students():
     if students :
-        for i in range(len(students)):
-            print(f"{i+1}. {students[i]['name']:<10} | Age: {students[i]['age']:<10} | {students[i]['course']:<10} | Score: {students[i]['score']:<10}")
+        print_students(students)
     else :
         print("No students available.")
 
 # SEARCH STUDENT FUNCTION 
 def search_student():
     search_student_by_name = get_valid_name("Enter student's name: ")
-    found = False 
-    for student in students :
-        if student["name"] == search_student_by_name:
-            print("Student found!")
-            print(student)
-            found = True 
-    if not found :
-        print("Student not found")
+    if  student := find_students_by_name(search_student_by_name):
+        print("Student found.")
+        print(student)
+    else :
+        print("Student not found.")
 
 # UPDATE STUDENT FUNCTION 
 def update_student_score():
     name_to_update = get_valid_name("Enter student's name: ")
-    found = False 
-    for student in students :
-        if student["name"] == name_to_update :
-            found = True 
-            found_student = student 
-    if found :
+    found_student =find_students_by_name(name_to_update)
+    if found_student:
         score_to_update = get_valid_score("Enter student's score: ")
         found_student["score"] = score_to_update
         print("Score updated successfully.")
@@ -113,15 +117,11 @@ def update_student_score():
 # DELETE STUDENT FUNCTION 
 def delete_student():
     name_to_delete = get_valid_name("Enter name to delete: ")
-    found = False 
-    for student in students:
-        if student["name"] == name_to_delete:
-            students.remove(student)
-            found = True 
-    if not found :
-        print("Student not found.")
-    else :
+    if student_to_remove := find_students_by_name(name_to_delete):
+        students.remove(student_to_remove)
         print("Student deleted successfully.")
+    else :
+        print("Student not found.")
 
 # CHECKING PASSED STUDENTS
 def passed_students():
@@ -157,6 +157,7 @@ def show_statistics():
     else :
         print("No students available.\n")
 
+# SHOWING UNIQUE COURSES ONLY 
 def show_unique_courses():
     if students :
         unique_courses = set()
@@ -167,6 +168,7 @@ def show_unique_courses():
     else :
         print("No students available.")
 
+# SORTING STUDENTS BY NAME OR SCORE 
 def sort_students():
     if students :
             while True:
@@ -176,8 +178,7 @@ def sort_students():
                     sorting_choice = (input("Enter choice(Name or Score) : ")).strip().lower()
                     if sorting_choice == "name" or sorting_choice == "score":
                         sorted_students = sorted(students,key=lambda student: student[sorting_choice])
-                        for i in range(len(sorted_students)):
-                            print(f"{i+1}. {sorted_students[i]['name']} | Score: {sorted_students[i]['score']}")
+                        print_students(sorted_students)
                         break
                     else :
                         print("Invalid option.\n")
@@ -200,7 +201,7 @@ def show_menu():
     print("9. Sort students")
     print("0. Exit")
 
-# PROGRAM ENTTRY 
+# PROGRAM ENTRY 
 while True:
     show_menu()
     try :
