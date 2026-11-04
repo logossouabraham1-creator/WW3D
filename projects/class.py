@@ -1,7 +1,6 @@
 # class Subject:
 #     pass
 
-
 # elephant = Subject()
 # elephant.name = "Elephant"
 # elephant.category = "Nature & Life"
@@ -10,6 +9,8 @@
 # print(elephant.category)
 # print(elephant.description)
 
+
+####################
 # class Subject:
 #     def __init__(self,name,category):
 #         self.name = name
@@ -110,24 +111,24 @@
 
 
 #########################
-class Subject:
-    def __init__(self, name, category):
-        self.name = name
-        self.category = category
+# class Subject:
+#     def __init__(self, name, category):
+#         self.name = name
+#         self.category = category
 
-    def describe(self):
-        print(f"{self.name} is in {self.category} category.")
-
-
-class Planet(Subject):
-    def __init__(self, name, category, number_of_moons: int):
-        super().__init__(name, category)
-        self.number_of_moons = number_of_moons
-
-    def show_moons(self):
-        print(f"The number of the moons : {self.number_of_moons}")
+#     def describe(self):
+#         print(f"{self.name} is in {self.category} category.")
 
 
-jupiter = Planet("Jupiter", "Space & Astronomy", 95)
-jupiter.describe()
-jupiter.show_moons()
+# class Planet(Subject):
+#     def __init__(self, name, category, number_of_moons: int):
+#         super().__init__(name, category)
+#         self.number_of_moons = number_of_moons
+
+#     def show_moons(self):
+#         print(f"The number of the moons : {self.number_of_moons}")
+
+
+# jupiter = Planet("Jupiter", "Space & Astronomy", 95)
+# jupiter.describe()
+# jupiter.show_moons()
