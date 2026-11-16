@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}{{ subject.name }} — WordWorld 3D{% endblock %}
+
+{% block content %}
+<a class="back-link" href="/category/{{ subject.category_slug }}">
+                ← Back to {{ subject.category_name }}
+            </a>
+
+<div class="subject-book">
+
+    <main class="book-reading-page">
+        <section class="subject-hero">
+            
+
+            <div class="subject-introduction">
+                <span class="eyebrow">{{ subject.category_name }}</span>
+                <h1>{{ subject.name }}<span></span></h1>
+                <p>{{ subject.summary }}</p>
+            </div>
+        </section>
+
+        {% if subject.quick_facts %}
+        <section class="quick-facts-section">
+            <span class="eyebrow">AT A GLANCE</span>
+            <div class="quick-facts-grid">
+                {% for fact in subject.quick_facts %}
+                <div class="quick-fact">
+                    <span>{{ fact.label }}</span>
+                    <strong>{{ fact.value }}</strong>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <article class="subject-article">
+            <section class="content-block">
+                <span class="eyebrow">01 / DEFINITION</span>
+                <h2>What is {{ subject.name }}?</h2>
+                <p>{{ subject.definition }}</p>
+            </section>
+
+            <section class="content-block">
+                <span class="eyebrow">02 / OVERVIEW</span>
+                <h2>Understanding {{ subject.name }}</h2>
+                <p>{{ subject.overview }}</p>
+            </section>
+
+            <section class="content-block">
+                <span class="eyebrow">03 / KEY FACTS</span>
+                <h2>Things worth knowing</h2>
+                <ul class="fact-list">
+                    {% for fact in subject.key_facts %}
+                    <li><span>✦</span>{{ fact }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="content-block">
+                <span class="eyebrow">04 / HOW IT WORKS</span>
+                <h2>How does it work?</h2>
+                <p>{{ subject.how_it_works }}</p>
+            </section>
+
+            <section class="content-block">
+                <span class="eyebrow">05 / SIGNIFICANCE</span>
+                <h2>Why does it matter?</h2>
+                <p>{{ subject.why_it_matters }}</p>
+            </section>
+
+            <section class="content-block">
+                <span class="eyebrow">06 / RELATED TOPICS</span>
+                <h2>Explore further</h2>
+                <div class="related-topics">
+                    {% for topic in subject.related_topics %}
+                    <span>{{ topic }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="content-block source-note">
+                <span class="eyebrow">07 / SOURCES</span>
+                <h2>References and further reading</h2>
+                {% if subject.source_url %}
+                <p>Explore the reference material used for this subject.</p>
+                <a href="{{ subject.source_url }}" target="_blank" rel="noopener">
+                    View source ↗
+                </a>
+                {% else %}
+                <p>Verified references will be added as content sources are connected.</p>
+                {% endif %}
+                {% if subject.image_credit %}
+                <p class="image-credit">Image credit: {{ subject.image_credit }}</p>
+                {% endif %}
+            </section>
+        </article>
+    </main>
+
+    <aside class="book-visual-page">
+        <div class="subject-visual-panel">
+            {% if subject.slug == "jupiter" %}
+            <img class="subject-main-image"
+                 src="/static/images/jupiter.jpg"
+                 alt="Jupiter photographed by NASA's Juno mission">
+            {% else %}
+            <div class="subject-visual">{{ subject.icon }}</div>
+            {% endif %}
+
+            <span class="visual-label">VISUAL EXPLORATION</span>
+
+            {% if subject.image_reference_url %}
+            <a href="{{ subject.image_reference_url }}" target="_blank" rel="noopener">
+                View image reference ↗
+            </a>
+            {% endif %}
+        </div>
+
+        {% if subject.slug == "jupiter" %}
+        <div class="planet-viewer" id="planet-viewer">
+            <canvas id="planet-canvas"
+                    aria-label="Interactive three-dimensional model of Jupiter">
+            </canvas>
+            <p class="planet-viewer-status" id="planet-viewer-status">
+                Loading Jupiter's 3D model...
+            </p>
+        </div>
+
+        <div class="planet-viewer-controls">
+            <span>Drag to rotate · Scroll to zoom</span>
+            <button type="button" id="reset-planet-view">
+                Reset view
+            </button>
+        </div>
+        {% else %}
+        <div class="viewer-placeholder">
+            <span class="viewer-icon">{{ subject.icon }}</span>
+            <span class="eyebrow">3D EXPLORATION</span>
+            <p>Explore {{ subject.name }} in three dimensions</p>
+            <small>Interactive model coming soon</small>
+        </div>
+        {% endif %}
+
+        <a class="sidebar-link" href="/#explore">
+            Explore other subjects ↗
+        </a>
+    </aside>
+
+</div>
+
+<script type="module"
+        src="{{ url_for('static', path='/js/planet-viewer.js') }}">
+</script>
+{% endblock %}

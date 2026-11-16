@@ -1,13 +1,26 @@
 from fastapi import FastAPI
-from app.routes.subjects import router as subjects_router
+from fastapi.staticfiles import StaticFiles
+
+from app.routes.pages import router as pages_router
 from app.routes.search import router as search_router
+from app.routes.subjects import router as subjects_router
 
-app = FastAPI(title="WordWorld 3D", description="Explore Everything", version="1.0.0")
+app = FastAPI(
+    title="WordWorld 3D",
+    description="Explore Everything",
+    version="1.0.0",
+)
 
-app.include_router(subjects_router, prefix="/api/subjects", tags=["Subjects"])
-app.include_router(search_router, prefix="/api/search", tags=["Search"])
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-
-@app.get("/")
-def home():
-    return {"message": "Welcome to WordWorld 3d."}
+app.include_router(pages_router)
+app.include_router(
+    subjects_router,
+    prefix="/api/subjects",
+    tags=["Subjects"],
+)
+app.include_router(
+    search_router,
+    prefix="/api/search",
+    tags=["Search"],
+)

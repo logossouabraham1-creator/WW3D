@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }} — WordWorld 3D{% endblock %}
+
+{% block content %}
+<section class="inner-hero">
+    <a class="back-link" href="/">← Back to home</a>
+    <span class="large-category-icon">{{ category.icon }}</span>
+    <span class="eyebrow">EXPLORE CATEGORY</span>
+    <h1>{{ category.name }}<span>.</span></h1>
+    <p>{{ category.description }}</p>
+</section>
+
+<section class="listing-section">
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">THE COLLECTION</span>
+            <h2>Explore subjects<span>.</span></h2>
+        </div>
+        <span class="result-count">{{ subjects|length }} subjects</span>
+    </div>
+
+    {% if subjects %}
+    <div class="featured-grid">
+        {% for subject in subjects %}
+        <a class="featured-card" href="/subject/{{ subject.slug }}">
+            <span class="featured-icon">{{ subject.icon }}</span>
+            <span class="featured-category">{{ subject.category_name }}</span>
+            <h3>{{ subject.name }}</h3>
+            <p>{{ subject.summary }}</p>
+            <span class="learn-link">Explore subject <span>→</span></span>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <span>✦</span>
+        <h3>More discoveries are coming.</h3>
+        <p>This category is ready for new subjects to be added.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
