@@ -1,43 +1,108 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ category.description }}">
 
-{% block title %}{{ category.name }} — WordWorld 3D{% endblock %}
+    <title>{{ category.name }} — WordWorld 3D</title>
 
-{% block content %}
-<section class="inner-hero">
-    <a class="back-link" href="/">← Back to home</a>
-    <span class="large-category-icon">{{ category.icon }}</span>
-    <span class="eyebrow">EXPLORE CATEGORY</span>
-    <h1>{{ category.name }}<span>.</span></h1>
-    <p>{{ category.description }}</p>
-</section>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <script src="{{ url_for('static', path='/js/app.js') }}" defer></script>
+</head>
 
-<section class="listing-section">
-    <div class="section-heading">
-        <div>
-            <span class="eyebrow">THE COLLECTION</span>
-            <h2>Explore subjects<span>.</span></h2>
-        </div>
-        <span class="result-count">{{ subjects|length }} subjects</span>
-    </div>
-
-    {% if subjects %}
-    <div class="featured-grid">
-        {% for subject in subjects %}
-        <a class="featured-card" href="/subject/{{ subject.slug }}">
-            <span class="featured-icon">{{ subject.icon }}</span>
-            <span class="featured-category">{{ subject.category_name }}</span>
-            <h3>{{ subject.name }}</h3>
-            <p>{{ subject.summary }}</p>
-            <span class="learn-link">Explore subject <span>→</span></span>
+<body>
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="WordWorld 3D homepage">
+            <span class="brand-icon">W</span>
+            <span>WordWorld <strong>3D</strong></span>
         </a>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div class="empty-state">
-        <span>✦</span>
-        <h3>More discoveries are coming.</h3>
-        <p>This category is ready for new subjects to be added.</p>
-    </div>
-    {% endif %}
-</section>
-{% endblock %}
+
+        <nav class="main-navigation" aria-label="Main navigation">
+            <a href="/#explore">Explore</a>
+            <a href="/#discover">Discover</a>
+            <a href="/#bookmarks">Bookmarks</a>
+
+            <button
+                id="theme-toggle"
+                class="theme-toggle"
+                type="button"
+                aria-label="Switch to dark theme"
+            >
+                <svg class="theme-icon" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5
+                             8.5 8.5 0 1 0 20.5 14.5Z"/>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="inner-hero">
+            <a class="back-link" href="/">← Back to home</a>
+
+            <span class="large-category-icon">{{ category.icon }}</span>
+
+            <span class="eyebrow">EXPLORE CATEGORY</span>
+
+            <h1>{{ category.name }}<span>.</span></h1>
+
+            <p>{{ category.description }}</p>
+        </section>
+
+        <section class="listing-section">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">THE COLLECTION</span>
+                    <h2>Explore subjects<span>.</span></h2>
+                </div>
+
+                <span class="result-count">
+                    {{ subjects|length }} subjects
+                </span>
+            </div>
+
+            {% if subjects %}
+            <div class="featured-grid">
+                {% for subject in subjects %}
+                <a class="featured-card" href="/subject/{{ subject.slug }}">
+                    <span class="featured-icon">{{ subject.icon }}</span>
+
+                    <span class="featured-category">
+                        {{ subject.category_name }}
+                    </span>
+
+                    <h3>{{ subject.name }}</h3>
+
+                    <p>{{ subject.summary }}</p>
+
+                    <span class="learn-link">
+                        Explore subject <span>→</span>
+                    </span>
+                </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <span>✦</span>
+                <h3>More discoveries are coming.</h3>
+                <p>This category is ready for new subjects to be added.</p>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <a class="brand footer-brand" href="/">
+            <span class="brand-icon">W</span>
+            <span>WordWorld <strong>3D</strong></span>
+        </a>
+
+        <p>Explore knowledge. Discover connections. Understand our world.</p>
+        <p class="copyright">&copy; 2026 WordWorld 3D</p>
+    </footer>
+</body>
+</html>

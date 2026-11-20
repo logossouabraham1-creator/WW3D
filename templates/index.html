@@ -1,120 +1,179 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore the world through an intelligent visual encyclopedia.">
 
-{% block title %}WordWorld 3D — Explore Everything{% endblock %}
+    <title>WordWorld 3D — Explore Everything</title>
 
-{% block content %}
-<section class="hero" id="explore">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <script src="{{ url_for('static', path='/js/app.js') }}" defer></script>
+</head>
 
-    <form id="search-form" class="search-form" role="search">
-        <label class="visually-hidden" for="search-input">
-            Search for a subject
-        </label>
+<body>
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="WordWorld 3D homepage">
+            <span class="brand-icon">W</span>
+            <span>WordWorld <strong>3D</strong></span>
+        </a>
 
-        <span class="search-icon" aria-hidden="true">⌕</span>
+        <nav class="main-navigation" aria-label="Main navigation">
+            <a href="/#explore">Explore</a>
+            <a href="/#discover">Discover</a>
+            <a href="/#bookmarks">Bookmarks</a>
 
-        <input
-            id="search-input"
-            name="query"
-            type="search"
-            placeholder="Search anything..."
-            autocomplete="off"
-            aria-describedby="search-status"
-        >
+            <button
+                id="theme-toggle"
+                class="theme-toggle"
+                type="button"
+                aria-label="Switch to dark theme"
+            >
+                <svg class="theme-icon" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round"
+                     stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5
+                             8.5 8.5 0 1 0 20.5 14.5Z"/>
+                </svg>
+            </button>
+        </nav>
+    </header>
 
-        <button type="submit">Explore</button>
+    <main>
+        <section class="hero" id="explore">
+            <form id="search-form" class="search-form" role="search">
+                <label class="visually-hidden" for="search-input">
+                    Search for a subject
+                </label>
 
-        <div
-            id="search-suggestions"
-            class="search-suggestions"
-            role="listbox"
-            aria-label="Search suggestions"
-            hidden
-        ></div>
-    </form>
+                <span class="search-icon" aria-hidden="true">⌕</span>
 
-    <p id="search-status" class="search-status" aria-live="polite">
-        Try a subject such as Mars, DNA, or the African elephant.
-    </p>
+                <input
+                    id="search-input"
+                    name="query"
+                    type="search"
+                    placeholder="Search anything..."
+                    autocomplete="off"
+                    aria-describedby="search-status"
+                >
 
-    <div id="search-results" class="search-results" hidden></div>
+                <button type="submit">Explore</button>
 
-    <p class="eyebrow">KNOWLEDGE WITHOUT LIMITS</p>
+                <div
+                    id="search-suggestions"
+                    class="search-suggestions"
+                    role="listbox"
+                    aria-label="Search suggestions"
+                    hidden
+                ></div>
+            </form>
 
-    <h1>
-        Explore the world.<br>
-        <span>Understand everything.</span>
-    </h1>
+            <p id="search-status" class="search-status" aria-live="polite">
+                Try a subject such as Mars, DNA, or the African elephant.
+            </p>
 
-    <p class="hero-description">
-        Discover the people, places, living things, events,
-        and ideas that shape our world.
-    </p>
-</section>
+            <div id="search-results" class="search-results" hidden></div>
 
-<section class="categories-section" aria-labelledby="categories-title">
-    <div class="section-heading">
-        <div>
-            <p class="eyebrow">BROWSE THE WORLD</p>
-            <h2 id="categories-title">Explore by category</h2>
-        </div>
-    </div>
+            <p class="eyebrow">KNOWLEDGE WITHOUT LIMITS</p>
 
-    <div class="category-grid">
-        {% for category in categories %}
-        <button
-            class="category-card"
-            type="button"
-            data-url="/category/{{ category.slug }}"
-        >
-            <span class="category-icon" aria-hidden="true">
-                {{ category.icon }}
-            </span>
+            <h1>
+                Explore the world.<br>
+                <span>Understand everything.</span>
+            </h1>
 
-            <span class="category-title">{{ category.name }}</span>
+            <p class="hero-description">
+                Discover the people, places, living things, events,
+                and ideas that shape our world.
+            </p>
+        </section>
 
-            <span class="category-description">
-                {{ category.description }}
-            </span>
-        </button>
-        {% endfor %}
-    </div>
-</section>
+        <section class="categories-section" aria-labelledby="categories-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">BROWSE THE WORLD</p>
+                    <h2 id="categories-title">Explore by category</h2>
+                </div>
+            </div>
 
-<section id="discover" class="discover-section">
-    <div class="section-heading">
-        <div>
-            <p class="eyebrow">FOLLOW YOUR CURIOSITY</p>
-            <h2>Discover something new</h2>
-        </div>
-    </div>
+            <div class="category-grid">
+                {% for category in categories %}
+                <button
+                    class="category-card"
+                    type="button"
+                    data-url="/category/{{ category.slug }}"
+                >
+                    <span class="category-icon" aria-hidden="true">
+                        {{ category.icon }}
+                    </span>
 
-    <div id="discovery-content" class="discovery-grid">
-        {% for subject in featured_subjects %}
-        <article class="discovery-card">
-            <span class="discovery-icon">{{ subject.icon }}</span>
-            <p class="discovery-category">{{ subject.category_name }}</p>
-            <h3>
-                <a href="/subject/{{ subject.slug }}">{{ subject.name }}</a>
-            </h3>
-            <p class="discovery-description">{{ subject.summary }}</p>
-            <a class="discovery-link" href="/subject/{{ subject.slug }}">
-                Explore subject →
-            </a>
-        </article>
-        {% endfor %}
-    </div>
-</section>
+                    <span class="category-title">{{ category.name }}</span>
 
-<section id="bookmarks" class="bookmarks-section">
-    <div class="section-heading">
-        <div>
-            <p class="eyebrow">SAVE FOR LATER</p>
-            <h2>Your bookmarks</h2>
-        </div>
-    </div>
+                    <span class="category-description">
+                        {{ category.description }}
+                    </span>
+                </button>
+                {% endfor %}
+            </div>
+        </section>
 
-    <p>
-        Your saved subjects will appear here when bookmarking is implemented.
-    </p>
-</section>
-{% endblock %}
+        <section id="discover" class="discover-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">FOLLOW YOUR CURIOSITY</p>
+                    <h2>Discover something new</h2>
+                </div>
+            </div>
+
+            <div id="discovery-content" class="discovery-grid">
+                {% for subject in featured_subjects %}
+                <article class="discovery-card">
+                    <span class="discovery-icon">{{ subject.icon }}</span>
+
+                    <p class="discovery-category">
+                        {{ subject.category_name }}
+                    </p>
+
+                    <h3>
+                        <a href="/subject/{{ subject.slug }}">
+                            {{ subject.name }}
+                        </a>
+                    </h3>
+
+                    <p class="discovery-description">
+                        {{ subject.summary }}
+                    </p>
+
+                    <a class="discovery-link" href="/subject/{{ subject.slug }}">
+                        Explore subject →
+                    </a>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="bookmarks" class="bookmarks-section">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">SAVE FOR LATER</p>
+                    <h2>Your bookmarks</h2>
+                </div>
+            </div>
+
+            <p>
+                Your saved subjects will appear here when bookmarking is implemented.
+            </p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <a class="brand footer-brand" href="/">
+            <span class="brand-icon">W</span>
+            <span>WordWorld <strong>3D</strong></span>
+        </a>
+
+        <p>Explore knowledge. Discover connections. Understand our world.</p>
+        <p class="copyright">&copy; 2026 WordWorld 3D</p>
+    </footer>
+</body>
+</html>

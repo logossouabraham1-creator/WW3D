@@ -1,13 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.templating import Jinja2Templates
 
-from app.services.catalog import (
-    CATEGORIES,
-    SUBJECTS,
-    get_category,
-    get_subject,
-    get_subjects_for_category,
-)
+from app.services.catalog import (CATEGORIES,SUBJECTS,get_category,get_subject,get_subjects_for_category,)
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -15,9 +9,7 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/")
 def home(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="index.html",
+    return templates.TemplateResponse(request=request,name="index.html",
         context={
             "categories": CATEGORIES,
             "featured_subjects": SUBJECTS[:4],
@@ -54,3 +46,4 @@ def subject_page(request: Request, subject_slug: str):
         name="subject.html",
         context={"subject": subject},
     )
+ 
